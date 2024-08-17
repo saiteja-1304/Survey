@@ -65,7 +65,6 @@ public class SurveyService {
 
             questions.add(questionOpt.get());
         }
-
         // Set the questions and return the response
         setInfos.setQuestions(questions);
         res.setSetinfos(setInfos);
@@ -133,12 +132,15 @@ public class SurveyService {
         // Set the questions and return the response
         setInfos.setQuestions(questions);
         res.setSetinfos(setInfos);
+        surveyRepository.save(survey1);
         return res;
-
     }
 
     public SurveyFullResponse getSurvey(Long surveyId) {
         Optional<Survey> survey = surveyRepository.findById(String.valueOf(surveyId));
+        if (survey.isEmpty()) {
+            throw new SurveyNotFoundException("survey with " + surveyId+ " not found"); // Ensure this exception is defined
+        }
         SurveyFullResponse res = MapQuestions(survey.get());
         return res;
         }
